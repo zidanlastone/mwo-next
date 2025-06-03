@@ -17,6 +17,7 @@ type ErrorItem = {
 
 export type ErrorResponse = {
     status: string,
+    message: string,
     data: {
         message?: string
         errors?: {
@@ -28,7 +29,7 @@ export type ErrorResponse = {
 const useFetch = <T, P = {}>(url: string, payload?: P, method: string = 'GET', requireAuth: boolean = true) => {
   const {data: session} = useSession();
 
-  const fetcher: Fetcher<GenericResponse<T>> = (url: string) => {
+  const fetcher: Fetcher<GenericResponse<T> | ErrorResponse> = (url: string) => {
 
     let fetchOption: any = {
         method

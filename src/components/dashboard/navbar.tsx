@@ -5,6 +5,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { Bars3Icon, XMarkIcon, Cog6ToothIcon, ArrowLeftStartOnRectangleIcon, UserCircleIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { invalidateSession } from '@/server/auth/authenticate';
 import { useSession } from 'next-auth/react';
+import ThemeToggle from '../actions/theme-toggle';
 
 const Navbar = ({
   onSidebarToggle,
@@ -28,6 +29,7 @@ const Navbar = ({
         <span className="font-bold text-lg text-gray-900 dark:text-gray-100">Wedding Organizer</span>
       </div>
       <div className="flex items-center gap-4">
+        <ThemeToggle />
         <Menu as="div" className="relative">
           <MenuButton className="flex items-center gap-2 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <UserCircleIcon className="w-8 h-8 text-gray-700 dark:text-gray-200" />

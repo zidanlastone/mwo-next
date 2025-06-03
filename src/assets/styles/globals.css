@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "./_table.css";
 
+/* @custom-variant dark (&:where(.dark, .dark *)); */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 :root {
   --background: #f3f3f3;
   --foreground: var(--color-gray-800);

@@ -30,7 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <Sidebar open={sidebarOpen} />
             <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
                 <Navbar onSidebarToggle={() => setSidebarOpen((v) => !v)} sidebarOpen={sidebarOpen} />
-                <main className="flex-1 p-6 rounded-t-xl bg-[var(--background)]">
+                <main className="flex-1 p-6 rounded-t-xl bg-gray-200 dark:bg-gray-900/10">
                     {children}
                 </main>
             </div>

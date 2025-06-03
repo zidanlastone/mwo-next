@@ -1,30 +1,29 @@
 "use client"
-import { auth } from '@/auth';
 import Card from '@/components/template/card'
 import Table from '@/components/template/table';
 import useFetch from '@/utils/hooks/use-fetch';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react'
-import useSWR from 'swr';
+// import { useSession } from 'next-auth/react'
+import React from 'react'
+import { array } from 'zod/v4';
 
-const {THead, Tr, TBody, Th, Td} = Table;
+type Company = {
+  id: string,
+  name: string,
+  description: string,
+  parent_id: string,
+  created_at: string,
+}
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-};
+function Companies() {
 
-function Users() {  
-  // const ssn = await auth();
-  const {data: session } = useSession();
-  const {data: result, isLoading: loading, error} = useFetch<User[]>('http://localhost:3000/users')
-  
+  const { data: result, isLoading: loading, error } = useFetch<Company[]>('http://localhost:3000/companies');
+  const {THead, Tr, Th, Td, TBody} = Table
+
   return (
     <div>
-      <Card title="Users">
-        <p>this is access {session?.user.name}</p>
+      <Card title="Vendors">
+        <p>This page manage vendors</p>
         <br />
         <hr />
         {loading && <div className="py-4">Loading users...</div>}
@@ -35,8 +34,9 @@ function Users() {
               <Tr>
                 <Th>ID</Th>
                 <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Created At</Th>
+                <Th>Description</Th>
+                <Th>Parent Id</Th>
+                <Th>Creted At</Th>
               </Tr>
             </THead>
             <TBody>
@@ -44,7 +44,8 @@ function Users() {
                 <Tr key={index.toString()}>
                   <Td>{item.id}</Td>
                   <Td>{item.name}</Td>
-                  <Td>{item.email}</Td>
+                  <Td>{item.description}</Td>
+                  <Td>{item.parent_id}</Td>
                   <Td>{item.created_at}</Td>
                 </Tr>
               ))}
@@ -56,4 +57,4 @@ function Users() {
   )
 }
 
-export default Users
+export default Companies

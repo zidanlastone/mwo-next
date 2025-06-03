@@ -1,30 +1,28 @@
 "use client"
-import { auth } from '@/auth';
 import Card from '@/components/template/card'
 import Table from '@/components/template/table';
 import useFetch from '@/utils/hooks/use-fetch';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react'
-import useSWR from 'swr';
+// import { useSession } from 'next-auth/react'
+import React from 'react'
 
-const {THead, Tr, TBody, Th, Td} = Table;
+type Vendors = {
+  id: string,
+  company_id: number,
+  name: string,
+  contact_info: string,
+  created_at: string,
+}
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-};
+function Vendors() {
 
-function Users() {  
-  // const ssn = await auth();
-  const {data: session } = useSession();
-  const {data: result, isLoading: loading, error} = useFetch<User[]>('http://localhost:3000/users')
-  
+  const { data: result, isLoading: loading, error } = useFetch<Vendors[]>('http://localhost:3000/vendors');
+  const {THead, Tr, Th, Td, TBody} = Table
+
   return (
     <div>
-      <Card title="Users">
-        <p>this is access {session?.user.name}</p>
+      <Card title="Vendors">
+        <p>This page manage vendors</p>
         <br />
         <hr />
         {loading && <div className="py-4">Loading users...</div>}
@@ -34,8 +32,9 @@ function Users() {
             <THead>
               <Tr>
                 <Th>ID</Th>
+                <Th>Company ID</Th>
                 <Th>Name</Th>
-                <Th>Email</Th>
+                <Th>Contact Info</Th>
                 <Th>Created At</Th>
               </Tr>
             </THead>
@@ -43,8 +42,9 @@ function Users() {
               {Array.isArray(result?.data) && result?.data.map((item, index) => (
                 <Tr key={index.toString()}>
                   <Td>{item.id}</Td>
+                  <Td>{item.company_id}</Td>
                   <Td>{item.name}</Td>
-                  <Td>{item.email}</Td>
+                  <Td>{item.contact_info}</Td>
                   <Td>{item.created_at}</Td>
                 </Tr>
               ))}
@@ -56,4 +56,4 @@ function Users() {
   )
 }
 
-export default Users
+export default Vendors

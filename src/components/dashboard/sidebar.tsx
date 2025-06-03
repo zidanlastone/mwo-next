@@ -15,7 +15,7 @@ const menuItems = [
     {
         title: 'Management', icon: Cog6ToothIcon, route: "#", menu: [
             { title: 'Users', icon: UsersIcon, route: "/users" },
-            { title: 'Access Control', icon: ShieldCheckIcon, route: "/users" },
+            { title: 'Access Control', icon: ShieldCheckIcon, route: "/access-control" },
         ]
     },
     { title: 'Companies', icon: BuildingOffice2Icon, route: "/companies" },

@@ -5,7 +5,7 @@ import Navbar from "@/components/landing/navbar";
 export default function Home() {
 
   return (
-    <div className="bg-[var(--background)]">
+    <div className="bg-gray-100 dark:bg-gray-900">
       <Navbar />
       <Hero />
       <Features />

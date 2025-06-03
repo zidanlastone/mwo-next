@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
+import ThemeToggle from "../actions/theme-toggle";
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -45,7 +46,8 @@ function Navbar() {
               </a>
             ))}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-1 items-center lg:justify-end">
+            <ThemeToggle />
             <Link href="/authenticate" className="text-sm/6 font-semibold text-gray-900 dark:text-gray-100">Log in <span aria-hidden="true">&rarr;</span></Link>
           </div>
         </nav>

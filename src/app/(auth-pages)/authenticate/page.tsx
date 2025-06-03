@@ -1,18 +1,15 @@
 'use client'
 import { actionAuthenticateWithCredentials, AuthenticateDTO } from "@/server/auth/authenticate";
 import React, { useEffect, useState } from "react"
+import {useForm} from "react-hook-form"
 
 export default function Authenticate() {
   // const {data: session} = useSession();
-  const [credentials, setCredentials] = useState<Partial<AuthenticateDTO>>();
 
-  const handleChange= (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials({...credentials, [e.target.name]: e.target.value})
-  }
+  const {register, watch, handleSubmit, formState: {errors}} = useForm<AuthenticateDTO>()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    actionAuthenticateWithCredentials(credentials as AuthenticateDTO)
+  const onSubmit = (value: AuthenticateDTO) => {
+    actionAuthenticateWithCredentials(value as AuthenticateDTO)
   }
 
   return (
@@ -38,7 +35,7 @@ export default function Authenticate() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit}>
+          <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
                 Email address
@@ -46,11 +43,11 @@ export default function Authenticate() {
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email"
                   type="email"
                   required
                   autoComplete="email"
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  {...register("email")}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-100 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
@@ -70,11 +67,11 @@ export default function Authenticate() {
               <div className="mt-2">
                 <input
                   id="password"
-                  name="password"
                   type="password"
                   required
                   autoComplete="current-password"
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  {...register("password")}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 dark:text-gray-100 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
