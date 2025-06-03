@@ -1,5 +1,5 @@
 import React from 'react';
-import { HomeIcon, UserIcon, ChartBarIcon, UsersIcon, ShieldCheckIcon, Cog6ToothIcon, BriefcaseIcon, ChevronDownIcon, ChevronLeftIcon, BuildingOffice2Icon, CubeIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, UserIcon, ChartBarIcon, UsersIcon, ShieldCheckIcon, Cog6ToothIcon, BriefcaseIcon, ChevronDownIcon, ChevronLeftIcon, BuildingOffice2Icon, CubeIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 
 
@@ -10,7 +10,7 @@ const menuItems = [
     { title: 'Procurement', icon: CubeIcon, route: "/procurement" },
     { title: 'Services', icon: BriefcaseIcon, route: "/services" },
     { title: 'Vendors', icon: UserIcon, route: "/vendors" },
-    { title: 'Scheduling', icon: ChartBarIcon, route: "/scheduling" },
+    { title: 'Scheduling', icon: CalendarDaysIcon, route: "/scheduling" },
     { title: 'Field Worker', icon: UserIcon, route: "/field-worker" },
     {
         title: 'Management', icon: Cog6ToothIcon, route: "#", menu: [

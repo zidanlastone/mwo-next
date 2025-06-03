@@ -17,7 +17,7 @@ const Navbar = ({
   const {data: session} = useSession();
 
   return (
-    <nav className="flex items-center justify-between bg-white dark:bg-gray-900 px-4 py-3 shadow-md sticky top-0 z-50">
+    <nav className="flex items-center justify-between bg-white dark:bg-gray-900 px-4 py-3 shadow-b-lg sticky top-0 z-50">
       <div className="flex items-center gap-2">
         <button
           onClick={onSidebarToggle}

@@ -4,11 +4,14 @@ import { useState, useEffect, useCallback } from "react";
 
 export default function useDarkMode() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const savedTheme = window.localStorage.getItem("theme");
-    if (savedTheme) {
-      return savedTheme === "dark";
+    if(typeof window != undefined){
+        const savedTheme = window.localStorage.getItem("theme");
+        if (savedTheme) {
+          return savedTheme === "dark";
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return false
   });
 
   // Toggle dark mode
@@ -23,7 +26,6 @@ export default function useDarkMode() {
         html.dataset.theme = 'light';
         window.localStorage.setItem("theme", "light");
       }
-      console.log(newMode)
       return newMode;
     });
   }, []);
