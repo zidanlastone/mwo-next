@@ -1,12 +1,14 @@
 import NextAuth, { NextAuthConfig, DefaultSession, User, Session } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import {JWT} from 'next-auth/jwt';
+import { ACCESS_TOKEN_DURATION } from "./utils/constants";
+import { fetchUserCompany } from "./server/company/user-company";
 
 
 export const authConfig: NextAuthConfig = {
     session: {
         strategy: "jwt",
-        maxAge: 60 * 60,
+        maxAge: 172800, // two days of access token
     },
     pages: {
         signIn: "/authenticate",
@@ -41,11 +43,22 @@ export const authConfig: NextAuthConfig = {
                     })
 
                     if(response.ok){
+                        let d = new Date();
                         const result = await response.json();
+                        let company = null
+
+                        const companies = await fetchUserCompany(result.data.token);
+
+                        if(Array.isArray(companies.data)){
+                            company = companies.data[0]
+                        }
+                    
                         return {
                             ...result.data.user,
                             token: result.data.token,
-                            refresh_token: result.data.refresh_token
+                            refresh_token: result.data.refresh_token,
+                            company: company,
+                            access_token_exp: new Date(d.getTime() + ACCESS_TOKEN_DURATION)
                         };
                     }
                     
@@ -58,13 +71,28 @@ export const authConfig: NextAuthConfig = {
         }),
     ],
     callbacks: {
-        jwt: async ({ token, user }) => {
+        jwt: async ({ token, user, trigger, session }) => {
             if (user) {
                 return { ...token, ...user };
             }
 
-            if(token.exp){
-                const shouldRefreshToken = Math.round((token.exp - 60) - Date.now()) > 3;
+            if (trigger === "update" && session) {
+                session.user.company = session.user.company;
+                
+                if(!session.user.company){
+                    const companies = await fetchUserCompany(session.user.token);
+                    if(Array.isArray(companies.data)){
+                        session.user.company = companies.data[0]
+                    }
+                }
+                
+                token = {...token, user : session, company: session.user.company}
+
+                return token;
+            };
+
+            if(token.access_token_exp){
+                const shouldRefreshToken = new Date(token.access_token_exp).getTime() < Date.now();
                 if(shouldRefreshToken){
                     try {
                         let body = JSON.stringify({refresh_token: token.refresh_token})
@@ -76,19 +104,22 @@ export const authConfig: NextAuthConfig = {
                             },
                             body
                         })
+                        
                         if(response.ok){
                             let result = await response.json();
-                            console.log("refreshed")
-                            token.exp = (Date.now()+ 60 * 60)
+                            let d = new Date();
                             return {
                                 ...token,
+                                pub: token.pub ,
                                 access_token: result.data.token,
-                                refresh_token: result.data.refresh_token
-                            }
+                                refresh_token: result.data.refresh_token,
+                                access_token_exp: new Date(d.getTime() + ACCESS_TOKEN_DURATION)
+                            } satisfies JWT
                         }
                     } catch(err) {
                         token.error = "RefreshTokenError";
                         console.error("RefreshTokenError", token)
+                        console.log(err)
                     }
                 }
             }
@@ -104,7 +135,8 @@ export const authConfig: NextAuthConfig = {
                     avatar: token?.avatar,
                     token: token?.token,
                     refresh_token: token?.refresh_token,
-                    emailVerified: token?.email_verified_at
+                    emailVerified: token?.email_verified_at,
+                    company: token?.company
                 } as Session["user"];
 
                 if(token.error) {

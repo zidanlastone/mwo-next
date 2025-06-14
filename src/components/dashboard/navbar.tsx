@@ -1,11 +1,15 @@
 "use client"
 
+import dynamic from 'next/dynamic';
 import React, { Fragment } from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon, Cog6ToothIcon, ArrowLeftStartOnRectangleIcon, UserCircleIcon, ChevronLeftIcon } from '@heroicons/react/24/outline';
 import { invalidateSession } from '@/server/auth/authenticate';
 import { useSession } from 'next-auth/react';
-import ThemeToggle from '../actions/theme-toggle';
+
+const ThemeToggle = dynamic(() => import('@/components/actions/theme-toggle'), {
+  ssr: false
+});
 
 const Navbar = ({
   onSidebarToggle,
@@ -65,7 +69,7 @@ const Navbar = ({
                 <MenuItem>
                   <a
                     href="#"
-                    onClick={(e) => { e.preventDefault(); invalidateSession() }}
+                    onClick={(e) => { e.preventDefault(); invalidateSession(session?.user.refresh_token) }}
                     className={`data-focus:bg-gray-100 dark:data-focus:bg-gray-700 flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
                     <ArrowLeftStartOnRectangleIcon className="w-5 h-5" /> Logout
                   </a>

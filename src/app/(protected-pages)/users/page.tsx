@@ -19,7 +19,7 @@ type User = {
 function Users() {  
   // const ssn = await auth();
   const {data: session } = useSession();
-  const {data: result, isLoading: loading, error} = useFetch<User[]>('http://localhost:3000/users')
+  const {data: result, isLoading: loading, error} = useFetch<User[]>(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/users`)
   
   return (
     <div>
@@ -27,7 +27,7 @@ function Users() {
         <p>this is access {session?.user.name}</p>
         <br />
         <hr />
-        {loading && <div className="py-4">Loading users...</div>}
+        {loading && <div className="py-4">Loading data...</div>}
         {error && <div className="py-4 text-red-500">{error}</div>}
         {!loading && !error && (
           <Table hoverable={true}>

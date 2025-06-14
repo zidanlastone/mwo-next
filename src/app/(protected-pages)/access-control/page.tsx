@@ -20,7 +20,7 @@ type AccesControll = {
 
 function Dashboard() {
   const { data: session } = useSession();
-  const { data: result, isLoading: loading, error } = useFetch<AccesControll[]>('http://localhost:3000/access-control');
+  const { data: result, isLoading: loading, error } = useFetch<AccesControll[]>(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/access-control`);
 
   const {THead, Tr, Th, Td, TBody} = Table
 
@@ -30,7 +30,7 @@ function Dashboard() {
         <p>This page manage the access control that every role has</p>
         <br />
         <hr />
-        {loading && <div className="py-4">Loading users...</div>}
+        {loading && <div className="py-4">Loading data...</div>}
         {error && <div className="py-4 text-red-500">{error}</div>}
         {!loading && !error && (
           <Table hoverable={true}>
